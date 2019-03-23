@@ -1,0 +1,65 @@
+
+适配器模式是指将一个类的接口转换成客户期望的另一个接口，不兼容改为兼容
+属于结构型设计模式。
+
+比如电源接口、充电接口转换
+有点亡羊补牢的感觉。
+
+
+一、场景一：poweradpater电源转换器
+
+AC220电
+DC5 电
+
+PowerAdpter 做适配
+    输入220伏，转出5伏
+
+测试类PowerAdapterTest
+
+二、场景二：登录适配器  loginadapter
+
+1、v1版本
+siginService 老代码
+    -regist()
+    -login()
+
+SinginForThirdService extends SinginService在不修改源代码的基础上，新代码以补救新的登录方式
+    -loginForQQ
+    -loginForWechat
+
+SinginForThirdServiceTest
+
+2、v2版本  结合策略模式、工厂模式、适配器模式
+interface IPassportForThird  只扩展
+    -loginForQQ
+    -loginForWechat
+    -loginForWeibo
+新建适配器
+PassportForThirdAdapter extends SiginService implements IPassportForThird
+
+业内和spring的做法
+新建接口
+interface LoginAdapter
+            -support兼容判断
+            -login
+LoginForQQAdapter implents LoginAdapter
+
+
+三、spring中的适配器模式
+AdvisorAdapter
+-supportsAdvice 判断与以前的是否兼容
+-实现具体动作
+
+四、HandlerAdapter
+
+
+
+五、适配器模式的优缺点
+优点：
+1、提高类的透明性和服用，现有的类服用但不需要改变
+2、目标类和适配器类解耦，提高程序的扩展性
+3、在很多业务场景中符合开闭原则
+缺点：
+1、需要全面考虑，可能会增加系统的复杂性
+2、增加代码阅读难度，降低代码可读性，过多使用适配器会使系统代码变得凌乱
+

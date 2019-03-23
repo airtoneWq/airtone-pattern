@@ -1,0 +1,59 @@
+
+模板方法模式，定义个算法的骨架，允许子类来实现细节
+一次性实现算法的不变的部分并将可变的部分交给子类来实现。
+
+模板模式通常使用抽象类，而不是接口，而工厂方法通常使用接口。
+
+一、场景一：课程相关
+abstract class NetworkCource
+    createCource
+        -final postPreResouce 1分发预习资料
+        -final createPPT 2制作PPT课件
+        -final liveVideo 3在线直播
+        -final postNote 4提交课件、课堂笔记
+        -final postSource 5提交源代码
+        -if (needHomework) {checkHomework} 6有作业检查作业  checkHomework是个钩子方法，子类可以微调
+JavaCource extends NetworkCource
+BigDataSource extends NetworkCource
+
+NetworkCourceTest
+    main
+
+
+二、场景二：jdbc
+interface RowMapper<T>
+    T mapRow(ResultSet rs,int rowNum)
+
+abstract class JdbcTemplate
+   构造方法传入DataSoucre
+   List excuteQuery(String sql , RowMapper<?> rowMapper, Object[] )
+        -1.获取连接 getConnection
+        -2.创建语句集 createPrepareStatement
+        -3.执行语句集 excuteQuery（pstm，values）
+        -4.处理结果集 parseResultSet(rs,rowMapper)
+        -5.关闭结果集 closeReslutSet(rs)
+        -6.关闭语句集 closeStatement()
+        -7.关闭连接  closeConnection(conn)
+写个实体类 Memmer    username\password\age\addr
+
+MemberDao extends JdbcTemplate
+
+测试类：
+MemberDaoTest
+
+
+
+三、jdk源码里的模板模式
+AbstractList  有很多子类
+    get方法
+
+HttpServlet  把init等等方法都写好了
+    abstract service方法交给子类实现
+
+BaseExecutor  有四个实现类
+    doUpdate方法
+
+四、模板模式优缺点
+优点：提高复用性、扩展性、符合开闭原则
+缺点：类数目的增加、继承关系自身缺点，如果父类添加新的抽象方法，所有子类都要改一遍
+

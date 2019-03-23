@@ -1,0 +1,101 @@
+
+装饰者模式，指在不改变原有对象的基础上，将功能附加到对象上，
+提供比继承更有弹性的替代方案（扩展原有对象的功能）
+
+属于结构性模式
+
+生活中的装饰者： 煎饼侠：煎饼加鸡蛋、香肠；   水果蛋糕加各种水果；
+
+适用场景：
+1、用于扩展一个类的功能或附加职责
+2、动态给一个对象添加功能，且这些功能可动态地撤销
+
+一、煎饼基本场景
+Battercake 煎饼
+    -getMsg()
+    -getPrice()
+    -
+BattercakeWithEgg extends Battercake
+    -重写 getMsg()加了鸡蛋的煎饼
+    -重写 getPrice() 多加一块钱
+BattercakeWithEggAndSausage extends Battercake
+    -重写 getMsg()加了鸡蛋、香肠的煎饼
+    -重写 getPrice() 多加2块钱
+
+测试类
+BattercakeTest
+
+以上不同的加的方式要建不同的类，不合适，这种就是用的继承。
+
+二、装饰者模式实现
+BaseBattercake extends Battercake  基础套餐
+
+abstract BatercakeDecotator extends Battercake
+    -把battercake先通过构造方法引进来
+    -重写getMsg()
+    -重写getPrice()
+
+ 不同的套餐通过继承抽象的装饰器类
+EggDecorator extends BatercakeDecotator
+SausageDecorator extends BatercakeDecotator
+
+
+测试类：BattercakeTest
+Battercake battercake
+battercake = new BaseBattercake();基础煎饼
+battercake = new EggDecorator(battercake);煎饼有点小，想再加一个鸡蛋
+battercake = new EggDecorator(battercake);再加一个鸡蛋
+battercake = new SausageDecorator(battercake) 再加一个香肠
+
+这种就比继承好，将选择权交给用户。
+
+
+三、 改造以前的适配器模式 通过不同方式登入 signinService
+
+新增接口 IsiginForThirdServie extends IsignService
+
+SigninForService implements IsiginForThirdService
+
+
+
+装饰器模式和适配器模式对比。
+装饰器模式：is-a      适配器模式：has-a
+一种特别的适配器        没有层级关系
+注重覆盖、扩展         注重兼容、转换
+前置考虑                后置考虑
+
+
+四、jdk中的装饰器--IO流，大桶套小桶
+BufferedReader
+-LineNumberReader
+
+InputStream
+-FileterInputSteam
+-FileInputStream
+
+大桶套小桶，把被装饰的桶放进去，修改原有功能并添加一些功能
+并且要保持is-a的关系
+
+五、Spring中的装饰器
+
+HttpResponseDecorator
+
+
+六、装饰器模式优缺点
+优点：
+1、是继承的有力补充，比继承灵活，即插即用
+2、可以排列组合不同装饰，组合成多种效果
+3、遵守开闭原则
+
+缺点：
+1、会出现更多的类，增加复杂性
+2、动态装饰时，多层装饰时会更复杂
+
+
+
+
+
+
+
+
+

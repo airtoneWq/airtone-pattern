@@ -1,0 +1,115 @@
+观察者模式
+定义了对象之间的一对多以来，让多个观察者对象同时监听一个主题对象
+当主体对象发生变化时，它的所有依赖者即观察者都会收到通知并更新。
+
+属于行为型模式。
+
+有时也叫发布订阅模式。
+
+微信朋友圈通知，比如多少条未读。 gper生态圈通知
+
+一、gper生态圈通知：学生提问题会通知老师，老师回答会通知学生
+gperadvice
+
+
+Gper extends Observable jdk提供的一种观察者的实现方式，是一个被观察者
+-getInstance
+-publishQuestion(Question question)
+
+Question
+-username
+-
+
+Teacher implements Observer    是一个观察者
+    -update(Observable o,Object arg)
+        老师，你收到了一个来自谁的提问，希望您解答，提的问题是
+
+ 测试类：
+ ObserverTest
+    Teacher tom
+    Question question
+    gper.addObserver(tom);---要先添加观察者再发布内容
+    gper.addObserver(mac);---要先添加观察者再发布内容
+    gper.publishQuestion(question)
+
+
+二、模拟来实现桌面程序的事件通知  java.awt.Event类
+events
+
+class Event  监听器的一种包装，标准事件源格式的定义
+-Object souce 事件源
+-Object target 事件触发要通知谁
+-Method callback 事件触发，要做什么动作，回调
+-String trigger 事件的名称，触发的是什么事件
+-long time 事件触发的时间
+
+
+class EventListerner 监听器，是一个观察者
+-Map<String,Event> events
+-addListener（String eventTpye,Object target）  通过事件名称和一个目标对象来触发事件
+-trigger 触发。只要有动作就发起
+-
+
+
+MouseEventType  枚举:鼠标事件，如单击、双击、滚动、悬停。。。
+Mouse:  对应枚举的各事件方法
+MouseEventCallback：回调函数
+
+测试类
+MouseEventTest
+    new Mouse()
+    mouse.addListener(单击，callback)
+    mouse.click();
+    mouse.addListener(双击，callback)
+    mouse.doubleclick();
+
+
+三、实现观察者模式工具包  com.google.guava
+能够轻松落地观察者模式的一种解决方案
+
+GuavaEvent
+@Subscribe--加了个注解，该方法就会被监听
+-subscribe(String str)
+
+
+GuavaEventTest
+    -main
+        消息总线
+        EventBus eventBus = new EventBus();
+        GuavaEvent guavaEvent = new GuavaEvent();
+        eventBus.register(guavaEvent);
+        eventBus.post(event:"Tom");
+从源码看原理差不多
+
+
+四、观察者模式优缺点
+缺点：
+观察者模式之间有过多的依赖，复杂度
+要使用得当，要避免循环调用
+
+五、spring中的应用
+一般带linstener的都是观察者模式。。
+
+ContextLoaderListener implements ServletcontextLisenter implements EventLisenter
+在初始化、销毁时都有监听。
+
+
+MQ:也是观察者模式的一种应用
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

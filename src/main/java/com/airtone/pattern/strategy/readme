@@ -1,0 +1,82 @@
+
+例子背景，不同的需要不同的
+一、场景一：促销-promotion
+
+1、
+Interface PromotionStrategy
+    doPromotion();
+class   EmptyStrategy无优惠
+class CouponStrategy优惠券
+class CashbackStrategy 返现策略
+class GroupbuyStrategy 团购策略
+
+PromotionActivity 促销活动
+excute()
+
+
+PromotionActivityTest
+main方法针对不同的规则执行不同的策略，将选择权交给运营部门。
+if.else if ..else
+promotionActivity.execute();
+当活动越来越多需要改代码
+
+2、加上工厂和单例
+PromotionActivityFactory来生产promotionActivity
+注册式单例，来缓存策略的keyvalue getPromotionStrategy
+
+当我们再发布一个活动，再加一个策略。
+
+
+二、场景二 选择支付方式
+订单
+Order uid、orderId、amount
+    MsgResult pay(payKey)
+
+支付方式抽象类：
+abstract class Payment
+    -getName
+    -queryBalance(String uid)
+
+AliPay extends Payment
+JDPay extends Payment
+WechatPay extends Payment
+UnionPay  extends Payment
+
+PayStrategy--支付策略类
+private static Map<String, Payment> payStrategy;
+public static Payment get(String payKey)  单例模式：通过统一入口实现动态策略
+
+测试类：PayStrategyTest
+    -先创建个订单Order，多少钱的
+    -用户选择不同的支付方式，动态去调用不同的支付策略，若余额充足则扣款成功，否则则失败
+
+三、Jdk中的策略模式
+interface Comparator  有很多中不同的比较策略
+int compare ()
+
+Arrays就要传入一个排序方法
+TreeMap中就需要传入一个排序方法
+
+
+四、Spring中的策略模式
+interface Resource
+在不同的场景来选择不同的Resource方法
+
+InstantiationStrategy对类的初始化
+
+五、优缺点
+优点：符合开闭规则
+    结合工厂模式+单例模式，可以避免使用多重条件转移语句，如if 。。else 语句，switch语句
+    使用策略模式可以提高算法的保密性和安全性
+缺点：客户端必须知道所有的策略，并且自行决定使用哪一个策略
+    代码中会产生非常多策略类，增加维护难度
+
+
+六、委派和策略模式的综合应用  也加工厂模式+单例模式，参考spring的源码
+
+之前委派模式的时候doDispatch的if else改造
+
+
+DispatchSevlet
+    class Handler
+
